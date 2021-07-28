@@ -11,6 +11,8 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/api", require("./api"));
+
 // error handler
 app.use((err, req, res, next) => {
   console.error(err);
