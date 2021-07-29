@@ -45,6 +45,12 @@ const Account = db.define("account", {
   comments: {
     type: Sequelize.TEXT,
   },
+  created: {
+    type: Sequelize.STRING,
+  },
+  tags: {
+    type: Sequelize.ARRAY(Sequelize.STRING),
+  },
 });
 
 module.exports = Account;
