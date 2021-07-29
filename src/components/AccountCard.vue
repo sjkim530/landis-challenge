@@ -6,13 +6,14 @@
         <h1>{{ account.name_first }}</h1>
         <h1>{{ account.name_last }}</h1>
       </div>
+
       <div class="account-card-right">
         <ul>
           <li>Email: {{ account.email }}</li>
           <li>Phone: {{ account.phone }}</li>
           <li>Address: {{ account.address }}</li>
           <li>Credit: {{ account.credit }}</li>
-          <li>Balance: {{ account.balance }}</li>
+          <li>Balance: ${{ account.balance }}</li>
         </ul>
       </div>
     </div>
@@ -20,26 +21,10 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
-  data() {
-    return {
-      accounts: [],
-    };
-  },
-  methods: {
-    async fetchAllAccounts() {
-      try {
-        const { data } = await axios.get("/api/accounts");
-        this.accounts = data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-  },
-  mounted() {
-    this.fetchAllAccounts();
+  name: "AccountCard",
+  props: {
+    accounts: Array,
   },
 };
 </script>
@@ -57,13 +42,14 @@ export default {
   justify-content: space-around;
   align-items: center;
   margin: 25px;
-  padding: 10px 20px 10px 20px;
+  padding: 10px 25px 10px 25px;
 }
 
 .account-card-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .account-card img {
@@ -72,6 +58,7 @@ export default {
   height: 120px;
   border-radius: 50%;
   margin-bottom: 10px;
+  border: 2px solid white;
 }
 
 .account-card h1 {
@@ -92,5 +79,6 @@ export default {
 
 .account-card-right ul {
   list-style-type: none;
+  padding: 0 0 0 20px;
 }
 </style>

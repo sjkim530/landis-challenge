@@ -1,11 +1,11 @@
 <template>
-  <div class="home">
-    <h1>Welcome to Landis</h1>
+  <div class="analytics">
+    <h1>Analytics</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Home",
+  name: "Analytics",
 };
 </script>
