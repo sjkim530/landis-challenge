@@ -19,7 +19,9 @@
           </h3>
         </div>
         <ul>
-          <li>Email: {{ account.email }}</li>
+          <li>
+            Email: <a href="account.email">{{ account.email }}</a>
+          </li>
           <li>Phone: {{ account.phone }}</li>
           <li>Address: {{ account.address }}</li>
           <li>Credit Score: {{ account.credit }}</li>
@@ -130,6 +132,10 @@ export default {
   flex-direction: column;
   text-align: left;
   margin-left: 35px;
+}
+
+.account-card-right a {
+  color: white;
 }
 
 .account-card-right ul {

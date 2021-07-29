@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
+import Analytics from "../views/Analytics.vue";
 
 const routes = [
   {
@@ -19,7 +20,7 @@ const routes = [
   {
     path: "/analytics",
     name: "Analytics",
-    component: () => import("../views/Analytics.vue"),
+    component: Analytics,
   },
 ];
 
