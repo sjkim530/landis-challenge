@@ -8,11 +8,21 @@
       </div>
 
       <div class="account-card-right">
+        <div class="indicator">
+          <p>Mortgage Indicator:</p>
+          <h3
+            v-bind:style="{
+              color: indicatorColor(calculateMortgageScore(account)),
+            }"
+          >
+            {{ calculateMortgageScore(account) }}
+          </h3>
+        </div>
         <ul>
           <li>Email: {{ account.email }}</li>
           <li>Phone: {{ account.phone }}</li>
           <li>Address: {{ account.address }}</li>
-          <li>Credit: {{ account.credit }}</li>
+          <li>Credit Score: {{ account.credit }}</li>
           <li>Balance: ${{ account.balance }}</li>
         </ul>
       </div>
@@ -25,6 +35,50 @@ export default {
   name: "AccountCard",
   props: {
     accounts: Array,
+  },
+
+  methods: {
+    calculateMortgageScore(account) {
+      let totalScore = 0;
+      let balance = Number(account.balance);
+
+      if (account.credit < 580) {
+        totalScore += 1;
+      } else if (account.credit < 670) {
+        totalScore += 2;
+      } else if (account.credit < 740) {
+        totalScore += 3;
+      } else if (account.credit < 800) {
+        totalScore += 4;
+      } else totalScore += 5;
+
+      if (balance < 4000) {
+        totalScore += 1;
+      } else if (balance < 8000) {
+        totalScore += 2;
+      } else if (balance < 12000) {
+        totalScore += 3;
+      } else if (balance < 16000) {
+        totalScore += 4;
+      } else totalScore += 5;
+
+      if (totalScore < 5) {
+        return "Needs Assistance";
+      } else if (totalScore < 7) {
+        return "Getting Closer";
+      } else if (totalScore < 9) {
+        return "Very Close";
+      } else return "Mortgage Approved";
+    },
+    indicatorColor(status) {
+      if (status === "Needs Assistance") {
+        return "red";
+      } else if (status === "Getting Closer") {
+        return "orange";
+      } else if (status === "Very Close") {
+        return "yellow";
+      } else return "green";
+    },
   },
 };
 </script>
@@ -42,7 +96,7 @@ export default {
   justify-content: space-around;
   align-items: center;
   margin: 25px;
-  padding: 10px 25px 10px 25px;
+  padding: 10px 20px 10px 25px;
 }
 
 .account-card-container {
@@ -74,11 +128,29 @@ export default {
 .account-card-right {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  text-align: left;
+  margin-left: 35px;
 }
 
 .account-card-right ul {
-  list-style-type: none;
+  /* list-style-type: none; */
   padding: 0 0 0 20px;
+}
+
+.indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.indicator h3 {
+  margin: 0;
+}
+
+.indicator-light {
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
 }
 </style>
