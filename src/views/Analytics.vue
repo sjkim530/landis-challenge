@@ -14,24 +14,31 @@
       <BalanceBarGraph v-if="isLoaded" :balances="filterBalances(accounts)" />
     </div>
   </div>
+  <div class="mortgage-indicator-pie-container">
+    <h3>Accounts Mortgage Loan Indicator</h3>
+    <MortgageIndicatorPieChart
+      v-if="isLoaded"
+      :mortgageScore="filterMortgageScore(accounts)"
+    />
+  </div>
 </template>
 
 <script>
 import axios from "axios";
 import CreditScorePieChart from "../components/CreditScorePie.vue";
 import BalanceBarGraph from "../components/BalanceBar.vue";
+import MortgageIndicatorPieChart from "../components/MortgageIndicatorPie.vue";
 
 export default {
   name: "Analytics",
   components: {
     CreditScorePieChart,
     BalanceBarGraph,
+    MortgageIndicatorPieChart,
   },
   data() {
     return {
       accounts: [],
-      // creditScore: [],
-      // balances: [],
       isLoaded: false,
     };
   },
@@ -108,6 +115,53 @@ export default {
         balances["16000-20000"],
       ];
     },
+    // eslint-disable-next-line no-unused-vars
+    filterMortgageScore(accounts) {
+      const indicator = {
+        "Needs Assistance": 0,
+        "Getting Closer": 0,
+        "Very Close": 0,
+        "Mortgage Approved": 0,
+      };
+      accounts = accounts.map((account) => {
+        let totalScore = 0;
+        let balance = Number(account.balance);
+
+        if (account.credit < 580) {
+          totalScore += 1;
+        } else if (account.credit < 670) {
+          totalScore += 2;
+        } else if (account.credit < 740) {
+          totalScore += 3;
+        } else if (account.credit < 800) {
+          totalScore += 4;
+        } else totalScore += 5;
+
+        if (balance < 4000) {
+          totalScore += 1;
+        } else if (balance < 8000) {
+          totalScore += 2;
+        } else if (balance < 12000) {
+          totalScore += 3;
+        } else if (balance < 16000) {
+          totalScore += 4;
+        } else totalScore += 5;
+
+        if (totalScore < 5) {
+          indicator["Needs Assistance"] += 1;
+        } else if (totalScore < 7) {
+          indicator["Getting Closer"] += 1;
+        } else if (totalScore < 9) {
+          indicator["Very Close"] += 1;
+        } else indicator["Mortgage Approved"] += 1;
+      });
+      return [
+        indicator["Needs Assistance"],
+        indicator["Getting Closer"],
+        indicator["Very Close"],
+        indicator["Mortgage Approved"],
+      ];
+    },
   },
   mounted() {
     this.fetchAllAccounts();
@@ -116,8 +170,9 @@ export default {
 </script>
 
 <style scoped>
-/* .credit-score-pie-container,
-.balance-bar-container {
-  margin-top: 25px;
-} */
+.credit-score-pie-container,
+.balance-bar-container,
+.mortgage-indicator-pie-container {
+  margin-top: 100px;
+}
 </style>

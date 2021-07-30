@@ -13,7 +13,6 @@ export default {
     balances: Array,
   },
   data() {
-    console.log(this.balances);
     return {
       balanceBarData: {
         type: "bar",
