@@ -2,11 +2,18 @@
   <div class="analytics">
     <h1>Analytics</h1>
 
-    <div>
+    <div class="credit-score-pie-container">
       <h3>Credit Score Pie Chart using FICO's scoring rubric</h3>
       <CreditScorePieChart
         v-if="isLoaded"
         :creditScore="this.filterCreditScore(this.accounts)"
+      />
+    </div>
+    <div class="balance-bar-container">
+      <h3>Balance Range Bar Graph</h3>
+      <BalanceBarGraph
+        v-if="isLoaded"
+        :balances="this.filterBalances(this.accounts)"
       />
     </div>
   </div>
@@ -15,16 +22,19 @@
 <script>
 import axios from "axios";
 import CreditScorePieChart from "../components/CreditScorePieChart.vue";
+import BalanceBarGraph from "../components/BalanceBarGraph.vue";
 
 export default {
   name: "Analytics",
   components: {
     CreditScorePieChart,
+    BalanceBarGraph,
   },
   data() {
     return {
       accounts: [],
       creditScore: [],
+      balances: [],
       isLoaded: false,
     };
   },
@@ -48,6 +58,7 @@ export default {
         "Very Good": 0,
         Exceptional: 0,
       };
+
       accounts = accounts.map((account) => {
         if (account.credit < 580) {
           credit["Poor"] += 1;
@@ -68,9 +79,48 @@ export default {
         credit["Exceptional"],
       ];
     },
+    // eslint-disable-next-line no-unused-vars
+    filterBalances(accounts) {
+      const balances = {
+        "0-3999": 0,
+        "4000-7999": 0,
+        "8000-11999": 0,
+        "12000-15999": 0,
+        "16000-20000": 0,
+      };
+
+      accounts = accounts.map((account) => {
+        const balance = Number(account.balance);
+
+        if (balance < 4000) {
+          balances["0-3999"] += 1;
+        } else if (balance < 8000) {
+          balances["4000-7999"] += 1;
+        } else if (balance < 12000) {
+          balances["8000-11999"] += 1;
+        } else if (balance < 16000) {
+          balances["12000-15999"] += 1;
+        } else balances["16000-20000"] += 1;
+      });
+
+      return [
+        balances["0-3999"],
+        balances["4000-7999"],
+        balances["8000-11999"],
+        balances["12000-15999"],
+        balances["16000-20000"],
+      ];
+    },
   },
   mounted() {
     this.fetchAllAccounts();
   },
 };
 </script>
+
+<style scoped>
+.credit-score-pie-container,
+.balance-bar-container {
+  margin-top: 25px;
+}
+</style>
