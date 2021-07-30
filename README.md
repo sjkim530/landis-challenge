@@ -1,5 +1,7 @@
 A Simple Fullstack App using Vue, Node.js, PostgreSQL, Chart.js
 
+Heroku: https://landis-coding-app.herokuapp.com/
+
 # Home page
 - Shows a welcome message
 
