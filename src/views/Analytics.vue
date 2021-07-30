@@ -6,23 +6,20 @@
       <h3>Credit Score Pie Chart using FICO's scoring rubric</h3>
       <CreditScorePieChart
         v-if="isLoaded"
-        :creditScore="this.filterCreditScore(this.accounts)"
+        :creditScore="filterCreditScore(accounts)"
       />
     </div>
     <div class="balance-bar-container">
       <h3>Balance Range Bar Graph</h3>
-      <BalanceBarGraph
-        v-if="isLoaded"
-        :balances="this.filterBalances(this.accounts)"
-      />
+      <BalanceBarGraph v-if="isLoaded" :balances="filterBalances(accounts)" />
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import CreditScorePieChart from "../components/CreditScorePieChart.vue";
-import BalanceBarGraph from "../components/BalanceBarGraph.vue";
+import CreditScorePieChart from "../components/CreditScorePie.vue";
+import BalanceBarGraph from "../components/BalanceBar.vue";
 
 export default {
   name: "Analytics",
@@ -33,8 +30,8 @@ export default {
   data() {
     return {
       accounts: [],
-      creditScore: [],
-      balances: [],
+      // creditScore: [],
+      // balances: [],
       isLoaded: false,
     };
   },
@@ -119,8 +116,8 @@ export default {
 </script>
 
 <style scoped>
-.credit-score-pie-container,
+/* .credit-score-pie-container,
 .balance-bar-container {
   margin-top: 25px;
-}
+} */
 </style>
